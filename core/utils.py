@@ -10,13 +10,14 @@
 #   Description :
 #
 #================================================================
-
+from __future__ import division # added to solve division problem (ex. if a/b <1 gives incorrect 0)
 import cv2
 import random
 import colorsys
 import numpy as np
 import tensorflow as tf
 from core.config import cfg
+
 
 def read_class_names(class_file_name):
     '''loads class name from a file'''
@@ -42,8 +43,9 @@ def image_preporcess(image, target_size, gt_boxes=None):
     ih, iw    = target_size
     h,  w, _  = image.shape
 
-    scale = min(iw/w, ih/h)
+    scale = min(float(iw/w), float(ih/h))
     nw, nh  = int(scale * w), int(scale * h)
+
     image_resized = cv2.resize(image, (nw, nh))
 
     image_paded = np.full(shape=[ih, iw, 3], fill_value=128.0)
